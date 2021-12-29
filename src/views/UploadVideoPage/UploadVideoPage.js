@@ -19,6 +19,15 @@ function UploadVideoPage() {
 		formData.append('File', selectedFile);
 		const file = document.getElementById('uploadedFile').files[0];
 		console.log(file);
+		// const fileStream = fs.createReadStream(file);
+
+		// export const uploadParams = {
+		// 	Bucket: "shake-media-bucket",
+		// 	// Add the required 'Key' parameter using the 'path' module.
+		// 	Key: path.basename(file),
+		// 	// Add the required 'Body' parameter
+		// 	Body: fileStream,
+		//   };
 		// const file = "OBJECT_PATH_AND_NAME"; // Path to and name of object. For example '../myFiles/index.js'.
 		// const fileStream = fs.createReadStream(file);	
 	};
