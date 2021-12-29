@@ -7,6 +7,8 @@ contract MediaCollection {
 
     address admin;
 
+    uint largestMediaCount;
+
     mapping(string => uint) mediaIdToCollectionId;
 
     mapping(string => Media) mediaIdToMedia;
@@ -52,13 +54,14 @@ contract MediaCollection {
                          string memory name, 
                          string memory genre,
                          string memory level,
-                         uint collectionId) public {
+                         uint collectionId,
+                         uint newCollection) public {
         require(collectionId <= collections.length);
         Media memory _media = Media({owner: msg.sender, id: hashId, name: name, genre: genre, level: level});
         mediaIdToMedia[hashId] = _media;
 
         Collection memory _collection;
-        if (collectionId == 0) {
+        if (newCollection > 0) {
             // string[] memory hashIds = new string[](100);
             _collection = Collection(collections.length, genre);
             collections.push(_collection);
@@ -81,13 +84,14 @@ contract MediaCollection {
 
     and continues similarly for hashIds, names, genres, and levels.    
     */
-    function getAllCollections() public view returns (uint[] memory ids, 
-                                                      string[] memory genres,
-                                                      address[][] memory owners, 
-                                                      string[][] memory hashIds,
-                                                      string[][] memory names,
-                                                      string[][] memory levels) {
+    function getAllCollections() public view returns (uint[2] memory ids, 
+                                                      string[2] memory genres,
+                                                      address[2][1] memory owners, 
+                                                      string[2][1] memory hashIds,
+                                                      string[2][1] memory names,
+                                                      string[2][1] memory levels) {
         // console.log("Collections: ", collections);
+        //TODO: create arrays with proper size. For now just setting 2 two to account for 2 medias
         for (uint i=0; i < collections.length; i++) {
             Collection memory _collection = collections[i];
             ids[i] = _collection.id;

@@ -1,4 +1,8 @@
 import React, {useState} from 'react'
+// import { PutObjectCommand } from "@aws-sdk/client-s3";
+// import { s3Client } from "./libs/s3Client.js"; // Helper function that creates Amazon S3 service client module.
+// import {path} from "path";
+// import {fs} from "fs";
 
 function UploadVideoPage() {
 
@@ -12,13 +16,16 @@ function UploadVideoPage() {
 
 	const handleSubmission = () => {
         const formData = new FormData();
-
 		formData.append('File', selectedFile);
+		const file = document.getElementById('uploadedFile').files[0];
+		console.log(file);
+		// const file = "OBJECT_PATH_AND_NAME"; // Path to and name of object. For example '../myFiles/index.js'.
+		// const fileStream = fs.createReadStream(file);	
 	};
 
     return (
-        <div class='videoUpload'>
-            <input type="file" name="file" onChange={changeHandler} />
+        <div className='videoUpload'>
+            <input type="file" id="uploadedFile" onChange={changeHandler} />
             {isSelected ? (
 				<div>
                     <p>Your file has been uploaded!</p>
