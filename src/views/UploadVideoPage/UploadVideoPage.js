@@ -1,50 +1,71 @@
 import React, {useState} from 'react'
-// import { PutObjectCommand } from "@aws-sdk/client-s3";
-// import { s3Client } from "./libs/s3Client.js"; // Helper function that creates Amazon S3 service client module.
-// import {path} from "path";
-// import {fs} from "fs";
+import axios from 'axios';
+import {ethers} from "ethers";
+import Greeter from "../../artifacts/contracts/Greeter.sol/Greeter.json";
+import MediaCollection from '../../artifacts/contracts/MediaCollection.sol/MediaCollection.json';
 
 function UploadVideoPage() {
 
+	const mediaCollectionAddress = "0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0"
+
     const [selectedFile, setSelectedFile] = useState();
 	const [isSelected, setIsSelected] = useState(false);
+
+	async function requestAccount() {
+		await window.ethereum.request({method: 'eth_requestAccounts'})
+	}
+
+	// async function setGreeting() {
+	// 	if (typeof window.ethereum !== 'undefined') {
+	// 		await requestAccount()
+	// 		const provider = new ethers.providers.Web3Provider(window.ethereum);
+	// 		const signer = provider.getSigner()
+	// 		const contract = new ethers.Contract(mediaCollectionAddress, MediaCollection.abi, signer)
+	// 		const transaction = await contract.createMedia(selectedFile.name, selectedFile.name, "genre", "level", 0, 1);
+	// 		// setGreetingValue('')
+	// 		await transaction.wait()
+	// 		// fetchGreeting()
+	// 	}
+	// }
 
     const changeHandler = (event) => {
 		setSelectedFile(event.target.files[0]);
 		setIsSelected(true);
 	};
 
-	const handleSubmission = () => {
-        const formData = new FormData();
-		formData.append('File', selectedFile);
-		const file = document.getElementById('uploadedFile').files[0];
-		console.log(file);
-		// const fileStream = fs.createReadStream(file);
+	const handleSubmission = async () => {
+		if (typeof window.ethereum !== 'undefined') {
+			await requestAccount()
+			const provider = new ethers.providers.Web3Provider(window.ethereum);
+			const signer = provider.getSigner()
+			const contract = new ethers.Contract(mediaCollectionAddress, MediaCollection.abi, signer)
+			const transaction = await contract.createMedia(selectedFile.name, selectedFile.name, "genre", "level", 0, 1);
+			await transaction.wait()
+		}
 
-		// export const uploadParams = {
-		// 	Bucket: "shake-media-bucket",
-		// 	// Add the required 'Key' parameter using the 'path' module.
-		// 	Key: path.basename(file),
-		// 	// Add the required 'Body' parameter
-		// 	Body: fileStream,
-		//   };
-		// const file = "OBJECT_PATH_AND_NAME"; // Path to and name of object. For example '../myFiles/index.js'.
-		// const fileStream = fs.createReadStream(file);	
+		console.log(selectedFile);
+		const formData = new FormData();
+		formData.append("file", selectedFile);
+		console.log(formData.entries().next());
+
+		axios.post("http://localhost:8081/video/upload", formData, { // receive two parameter endpoint url ,form data
+		}).then(res => { // then print response status
+			console.log(res.statusText)
+		})
 	};
 
     return (
         <div className='videoUpload'>
-            <input type="file" id="uploadedFile" onChange={changeHandler} />
+			<input type="file" name="file" id="input" onChange={changeHandler} />
             {isSelected ? (
 				<div>
-                    <p>Your file has been uploaded!</p>
 					<p>Filename: {selectedFile.name}</p>
 				</div>
 			) : (
-				<p>Select a file to show details</p>
+				<p>Select a file</p>
 			)}
             <div>
-				<button onClick={handleSubmission}>Submit</button>
+				<button type="button" onClick={handleSubmission}>Submit</button>
 			</div>
         </div>
     )

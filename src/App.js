@@ -4,6 +4,7 @@ import './App.css';
 import {Route, Routes, Link} from 'react-router-dom'
 import Greeter from './artifacts/contracts/Greeter.sol/Greeter.json'
 import UploadVideoPage from './views/UploadVideoPage/UploadVideoPage'
+import ViewVideoPage from "./views/UploadVideoPage/ViewVideoPage";
 
 const greeterAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3"
 
@@ -50,12 +51,14 @@ function App() {
             </li>
             <li>
               <Link to="/video/upload">Upload Video</Link>
+              <Link to="/video/view">View Video</Link>
             </li>
           </ul>
         </nav>
       <Routes>
           <Route exact path='/'/>
           <Route path='/video/upload' element={<UploadVideoPage/>}/>
+        <Route path='/video/view' element={<ViewVideoPage/>}/>
       </Routes>
     </div>
   );
