@@ -1,15 +1,17 @@
 import React, {useState} from 'react'
 import axios from 'axios';
 import {ethers} from "ethers";
-import Greeter from "../../artifacts/contracts/Greeter.sol/Greeter.json";
 import MediaCollection from '../../artifacts/contracts/MediaCollection.sol/MediaCollection.json';
 
 function UploadVideoPage() {
 
-	const mediaCollectionAddress = "0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0"
+	const mediaCollectionAddress = "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707"
 
     const [selectedFile, setSelectedFile] = useState();
 	const [isSelected, setIsSelected] = useState(false);
+
+	const [owner, setOwner] = useState('');
+	const [isOwner, setIsOwner] = useState(false);
 
 	async function requestAccount() {
 		await window.ethereum.request({method: 'eth_requestAccounts'})
@@ -33,13 +35,18 @@ function UploadVideoPage() {
 		setIsSelected(true);
 	};
 
+	const changeHandlerOwner = (event) => {
+		setOwner(event.target.value);
+	}
+
 	const handleSubmission = async () => {
 		if (typeof window.ethereum !== 'undefined') {
 			await requestAccount()
 			const provider = new ethers.providers.Web3Provider(window.ethereum);
 			const signer = provider.getSigner()
 			const contract = new ethers.Contract(mediaCollectionAddress, MediaCollection.abi, signer)
-			const transaction = await contract.createMedia(selectedFile.name, selectedFile.name, "genre", "level", 0, 1);
+			console.log(selectedFile.name)
+			const transaction = await contract.createMedia(selectedFile.name, owner, "genre", "level", 0, 1);
 			await transaction.wait()
 		}
 
@@ -55,8 +62,11 @@ function UploadVideoPage() {
 	};
 
     return (
-        <div className='videoUpload'>
-			<input type="file" name="file" id="input" onChange={changeHandler} />
+        <div className='videoUpload' >
+			<div>
+				<input type="text" name="file" onChange={changeHandlerOwner} />
+			</div>
+			<input type="file" name="file" onChange={changeHandler} />
             {isSelected ? (
 				<div>
 					<p>Filename: {selectedFile.name}</p>

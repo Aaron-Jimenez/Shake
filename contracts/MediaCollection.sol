@@ -50,13 +50,14 @@ contract MediaCollection {
 
 
 
-    function createMedia(string memory hashId, 
+    function createMedia(string memory hashId,
                          string memory name, 
                          string memory genre,
                          string memory level,
                          uint collectionId,
                          uint newCollection) public {
         require(collectionId <= collections.length);
+        //using hash id to store owner name for now
         Media memory _media = Media({owner: msg.sender, id: hashId, name: name, genre: genre, level: level});
         mediaIdToMedia[hashId] = _media;
 
@@ -114,5 +115,12 @@ contract MediaCollection {
 
     function getCollection(uint ind) public view returns (Collection memory) {
         return collections[ind];
+    }
+
+    function getOwnersByCollectionId(uint collectionId) public view returns (string[2] memory owners) {
+        string[] memory _mediaIds = collectionIdToMediaId[collectionId];
+        for (uint i=0; i < _mediaIds.length; i++) {
+            owners[i] = _mediaIds[i];
+        }
     }
 }

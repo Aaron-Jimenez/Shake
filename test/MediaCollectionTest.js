@@ -57,3 +57,18 @@ describe("MediaCollection", function () {
     });
 })
 
+describe("MediaCollection", function() {
+    it("Should owners", async function () {
+        const MediaCollection = await ethers.getContractFactory("MediaCollection");
+        const coll = await MediaCollection.deploy();
+        await coll.deployed();
+
+        const createMediaTx = await coll.createMedia("testHash", "testName", "testGenre", "testLevel", 0, 1);
+        await createMediaTx.wait();
+
+        const collections = await coll.getOwnersByCollectionId(0);
+
+        expect(collections[0]).to.equal("testHash");
+    })
+})
+
