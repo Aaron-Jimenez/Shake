@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ethers } from 'ethers';
-import './App.css';
+import './raw/App.css';
 import {Route, Routes, Link} from 'react-router-dom'
 import Greeter from './artifacts/contracts/Greeter.sol/Greeter.json'
 import UploadVideoPage from './views/UploadVideoPage/UploadVideoPage'
@@ -8,6 +8,8 @@ import ViewVideoPage from "./views/UploadVideoPage/ViewVideoPage";
 import BigBuckPage from "./views/components/BigBuckPage";
 import UploadLions from "./views/components/UploadLions";
 import PurchaseBirds from "./views/components/PurchaseBirds";
+import NavigationBar from "./views/components/NavigationBar";
+
 
 const greeterAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3"
 
@@ -69,21 +71,23 @@ function App() {
   //   return  <ul>{ namesList }</ul>
   // }
 
+  // <div className="text-sm lg:flex-grow">
+  //   <a href="#responsive-header" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+  //     Docs
+  //   </a>
+  //   <a href="#responsive-header" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+  //     Examples
+  //   </a>
+  //   <a href="#responsive-header" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
+  //     Blog
+  //   </a>
+  // </div>
+
   return (
     <div>
-      <nav>
-        <ul class="navList">
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/video/upload">Upload Video</Link>
-          </li>
-          <li>
-            <Link to="/video/view">View Video</Link>
-          </li>
-        </ul>
-      </nav>
+      <NavigationBar></NavigationBar>
+
+
       <Routes>
         <Route exact path='/'/>
         <Route path='/video/upload' element={<UploadVideoPage/>}/>

@@ -45,6 +45,7 @@
     ]
   },
   "devDependencies": {
+    "file-loader": "^6.2.0",
     "react-video-thumbnail": "^0.1.3"
   }
 }
