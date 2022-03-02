@@ -3,12 +3,14 @@ import { ethers } from 'ethers';
 import './raw/App.css';
 import {Route, Routes, Link} from 'react-router-dom'
 import Greeter from './artifacts/contracts/Greeter.sol/Greeter.json'
-import UploadVideoPage from './views/UploadVideoPage/UploadVideoPage'
-import ViewVideoPage from "./views/UploadVideoPage/ViewVideoPage";
+import UploadPage from './views/pages/upload/UploadPage'
+import HomePage from "./views/pages/HomePage";
 import BigBuckPage from "./views/components/BigBuckPage";
 import UploadLions from "./views/components/UploadLions";
 import PurchaseBirds from "./views/components/PurchaseBirds";
 import NavigationBar from "./views/components/NavigationBar";
+import FinishedUploadPage from "./views/pages/upload/FinishedUploadPage";
+import UploadParent from "./views/pages/upload/UploadParent";
 
 
 const greeterAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3"
@@ -89,9 +91,10 @@ function App() {
 
 
       <Routes>
-        <Route exact path='/'/>
-        <Route path='/video/upload' element={<UploadVideoPage/>}/>
-        <Route path='/video/view' element={<ViewVideoPage/>}/>
+        <Route exact path='/' element={<HomePage/>}/>
+        <Route path='/upload' element={<UploadParent/>}/>
+        <Route path='/video/search' element={<HomePage/>}/>
+        {/*<Route path='/upload/show' element={<FinishedUploadPage/>}/>*/}
         <Route path='/video/upload/add-to-collection' element={<BigBuckPage/>}/>
         <Route path='/video/upload/add-to-collection/lions' element={<UploadLions/>}/>
         <Route path='/purchase/birds' element={<PurchaseBirds/>}/>

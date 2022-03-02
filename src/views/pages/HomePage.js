@@ -1,11 +1,9 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import {Link} from "react-router-dom";
-import Thumbnail from "../components/Thumbnail";
-import logo from "../../images/teaching_icon.svg";
 import searchImage from "../../images/cool_search_image.svg"
 
-function ViewVideoPage() {
+function HomePage() {
 
     const [selectedFile, setSelectedFile] = useState('');
     const [isSelected, setIsSelected] = useState(false);
@@ -40,22 +38,20 @@ function ViewVideoPage() {
                 <img src={searchImage} alt="Img of teacher" className="h-24 w-24 mt-4 mx-auto"/>
             </div>
             {isSelected ? (
-                <div>
+                <div class="mx-auto">
                     <video id="videoPlayer" width="650" controls muted="muted" autoPlay>
                         <source src={"http://localhost:8081/video/view-by-name?filename=" + selectedFile} type="video/mp4"/>
                     </video>
                 </div>
             ) : (
-                <div class="text-slate-500 text-xl mt-4 mb-2">
-                    <p>Search</p>
-                </div>
+                <div></div>
             )}
             <div>
-                <input class="rounded border-2 border-cyan-600 text-center" placeholder="ex: long division" type="text" onChange={changeHandler} />
+                <input class="rounded border-2 border-cyan-600 hover:border-cyan-400 text-center mt-4 mb-2 focus:shadow-md w-64" placeholder="long division" type="text" onChange={changeHandler} />
             </div>
 
             <div>
-                <button class="rounded ring-1 hover:ring-cyan-400 text-center text-slate-600 bg-slate-100 px-4 my-2" type="button" onClick={getVideo}>Submit</button>
+                <button class="rounded ring-1 ring-cyan-600 hover:ring-cyan-400 text-center text-slate-600 bg-slate-100 px-4 my-2" type="button" onClick={getVideo}>Submit</button>
             </div>
                 {/*<VideoThumbnail*/}
                 {/*    videoUrl="http://localhost:8081/video/view-by-name?filename=bigbuck.mp4"*/}
@@ -63,12 +59,12 @@ function ViewVideoPage() {
                 {/*    height={80}*/}
                 {/*/>*/}
                 {/*<Thumbnail></Thumbnail>*/}
-            <div class="my-16">
-                <Link class="text-sm text-slate-600 rounded hover:border-2 hover:border-blue-400" to="/video/upload">Want to create your own collection?</Link>
+            <div class="my-24 py-2">
+                <Link class="text-sm text-slate-600 rounded border-2 border-slate-100 hover:border-blue-400" to="/video/upload">Want to create your own collection?</Link>
             </div>
 
         </div>
     );
 }
 
-export default ViewVideoPage;
+export default HomePage;

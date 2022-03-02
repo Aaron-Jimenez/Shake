@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import {ethers} from "ethers";
 import Greeter from "../../artifacts/contracts/Greeter.sol/Greeter.json";
-import {mediaCollectionAddress} from "../UploadVideoPage/UploadVideoPage"
+import {mediaCollectionAddress} from "../pages/upload/UploadPage"
 
 
 function Search() {
@@ -50,4 +50,4 @@ function Search() {
     );
 }
 
-export default ViewVideoPage;
+export default HomePage;
