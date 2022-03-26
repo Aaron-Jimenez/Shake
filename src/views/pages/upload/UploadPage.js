@@ -7,9 +7,9 @@ import SubmitButton from "../../components/buttons/SubmitButton";
 import CommonInput from "../../components/buttons/CommonInput";
 import FinishedUploadPage from "./FinishedUploadPage";
 
-function UploadPage({handleSubmission}) {
+function UploadPage() {
 
-	const mediaCollectionAddress = "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707"
+	const mediaCollectionAddress = "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"
 
     const [selectedFile, setSelectedFile] = useState();
 	const [isSelected, setIsSelected] = useState(false);
@@ -19,24 +19,30 @@ function UploadPage({handleSubmission}) {
 	const [owner, setOwner] = useState('');
 	const [isOwner, setIsOwner] = useState(false);
 
+	const handleSubmission = async () => {
+		if (typeof window.ethereum !== 'undefined') {
+			await requestAccount()
+			const provider = new ethers.providers.Web3Provider(window.ethereum);
+			const signer = provider.getSigner()
+			const contract = new ethers.Contract(mediaCollectionAddress, MediaCollection.abi, signer)
+			const transaction = await contract.createMedia(selectedFile.name, owner, "genre", "level", 0, 1);
+			await transaction.wait()
+		}
 
+		console.log(filename);
+		const formData = new FormData();
+		formData.append("file", selectedFile);
+		console.log(formData.entries().next());
 
-	// async function requestAccount() {
-	// 	await window.ethereum.request({method: 'eth_requestAccounts'})
-	// }
+		axios.post("http://localhost:8081/video/upload", formData, { // receive two parameter endpoint url ,form data
+		}).then(res => { // then print response status
+			console.log(res.statusText)
+		})
+	};
 
-	// async function setGreeting() {
-	// 	if (typeof window.ethereum !== 'undefined') {
-	// 		await requestAccount()
-	// 		const provider = new ethers.providers.Web3Provider(window.ethereum);
-	// 		const signer = provider.getSigner()
-	// 		const contract = new ethers.Contract(mediaCollectionAddress, MediaCollection.abi, signer)
-	// 		const transaction = await contract.createMedia(selectedFile.name, selectedFile.name, "genre", "level", 0, 1);
-	// 		// setGreetingValue('')
-	// 		await transaction.wait()
-	// 		// fetchGreeting()
-	// 	}
-	// }
+	async function requestAccount() {
+		await window.ethereum.request({method: 'eth_requestAccounts'})
+	}
 
     const fileSelectedHandler = (event) => {
 		console.log("File chosen: ", event.target.files[0].name)
@@ -59,13 +65,6 @@ function UploadPage({handleSubmission}) {
 		}
 		return <div></div>
 	}
-
-	// function IsYetSubmitted() {
-	// 	if (isSubmitted) {
-	// 		return <div><FinishedUploadPage uploadedFilename={selectedFile}/></div>
-	// 	}
-	// 	return ()
-	// }
 
 	return (
 		<div className="text-center border-slate-400 items-center bg-slate-100">

@@ -53,16 +53,9 @@ function HomePage() {
             <div>
                 <button class="rounded ring-1 ring-cyan-600 hover:ring-cyan-400 text-center text-slate-600 bg-slate-100 px-4 my-2" type="button" onClick={getVideo}>Submit</button>
             </div>
-                {/*<VideoThumbnail*/}
-                {/*    videoUrl="http://localhost:8081/video/view-by-name?filename=bigbuck.mp4"*/}
-                {/*    width={120}*/}
-                {/*    height={80}*/}
-                {/*/>*/}
-                {/*<Thumbnail></Thumbnail>*/}
             <div class="my-24 py-2">
-                <Link class="text-sm text-slate-600 rounded border-2 border-slate-100 hover:border-blue-400" to="/video/upload">Want to create your own collection?</Link>
+                <Link class="text-sm text-slate-600 rounded border-2 border-slate-100 hover:border-blue-400" to="/upload">Want to create your own collection?</Link>
             </div>
-
         </div>
     );
 }
